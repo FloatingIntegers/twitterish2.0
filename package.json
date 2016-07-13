@@ -1,0 +1,23 @@
+{
+  "name": "6week",
+  "version": "1.0.0",
+  "description": "Twitter type app that has users and tweets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FloatingIntegers/twitterish2.0.git"
+  },
+  "keywords": [
+    "twitter",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FloatingIntegers/twitterish2.0/issues"
+  },
+  "homepage": "https://github.com/FloatingIntegers/twitterish2.0#readme"
+}
