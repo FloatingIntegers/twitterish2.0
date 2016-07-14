@@ -27,7 +27,7 @@ function getTweet() {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      const tweets = JSON.parse(xhr.response);
+      const tweets = JSON.parse(xhr.response).reverse();
       tweets.forEach((element) => {
         const tweetDiv = document.createElement('div');
         const text = document.createTextNode(`${element.username}: ${element.tweets}`);
