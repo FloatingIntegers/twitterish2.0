@@ -25,33 +25,45 @@ function handler(req, res) {
     });
   } else if (url.includes('user')) {
     const queryurl = uri.parse(url).query.split('&');
-    console.log(queryurl);
-    pool.query('SELECT id FROM users WHERE username = $1 AND password = $2;', ['bradley', 'pura'], (err, result) => {
-      if (err) handleError(res);
-      console.log(result);
-      res.writeHead(200);
-      res.end(JSON.stringify(result));
+    const username = queryurl[0].split('=')[1];
+    const password = queryurl[1].split('=')[1];
+    pool.query('SELECT id FROM users WHERE username = $1 AND password = $2;', [username, password], (err, result) => {
+      if (err){
+         handleError(res);
+      } else if (result.rows[0] === undefined){
+        pool.query('INSERT INTO users(username, password) values($1, $2)', [username, password], (err, result) => {
+          pool.query('SELECT id FROM users WHERE username = $1 AND password = $2;', [username, password], (err, result) => {
+            res.writeHead(200, { 'Content-type': 'application/json' });
+            res.end(JSON.stringify(result.rows[0]));
+          });
+        });
+      } else {
+      res.writeHead(200, { 'Content-type': 'application/json' });
+      res.end(JSON.stringify(result.rows[0]));
+      }
     });
-    res.writeHead(200);
-    res.end();
   } else if (url === '/getTweet') {
-    pool.query('SELECT tweets FROM tweets;', (err, result) => {
+    pool.query('SELECT users.username, tweets.tweets FROM users INNER JOIN tweets on(users.id=user_id);', (err, result) => {
       if (err) handleError (res);
       res.writeHead(200, { 'Content-type': 'application/json' });
       res.end(JSON.stringify(result.rows));
     });
   } else if (url === '/postTweet') {
-    let tweetText = '';
-    req.on('data', (chunk) => {
-      tweetText += chunk;
-    });
-    req.on('end', () => {
-      pool.query('INSERT INTO tweets(user_id, tweets, timeid) values($1, $2, $3);', [1, tweetText, 'now()'], (err, result) => {
-        if (err) handleError(res);
-        res.writeHead(200);
-        res.end();
+      let tweetText = '';
+      req.on('data', (chunk) => {
+        tweetText += chunk;
       });
-    });
+      req.on('end', () => {
+        tweetText = JSON.parse(tweetText);
+        const foreignKey = tweetText.cookie.split('=')[1];
+          pool.query('INSERT INTO tweets(user_id, tweets, timeid) values($1, $2, $3);', [foreignKey, tweetText.text, 'now()'], (err, result) => {
+            if (err) handleError(res);
+            res.writeHead(200);
+            res.end();
+          })
+      });
+
+
   } else handleError(res);
 }
 
