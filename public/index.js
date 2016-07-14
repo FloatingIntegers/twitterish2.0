@@ -1,20 +1,9 @@
 const tweetText = document.getElementById('tweetText');
 const tweetButton = document.getElementById('tweetButton');
 const dashboard = document.getElementById('dashboard');
+// const loginForm = document.getElementById('login');
+const formSubmit = document.getElementById('form-submit');
 
-// function getTweet(){
-//   const xhr = new XMLHttpRequest();
-//   xhr.onreadystatechange = function() {
-//   if (xhr.readyState == 4 && xhr.status == 200) {
-//     const tweet = document.createElement('div');
-//     const text = document.createTextNode(xhr.response);
-//     tweet.appendChild(text);
-//     dashboard.appendChild(tweet);
-//   }
-// };
-// xhr.open("GET", "/getTweet", true);
-// xhr.send();
-// }
 
 function postTweet() {
   const xhr = new XMLHttpRequest();
@@ -41,6 +30,20 @@ function getTweet() {
   xhr.send();
 }
 
-window.addEventListener('load', getTweet);
+function login() {
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log(xhr.response);
+    }
+  }
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  let qString = `/user?username=${username}&password=${password}`;
+  xhr.open("POST", qString, true);
+  xhr.send();
+}
 
+window.addEventListener('load', getTweet);
+formSubmit.addEventListener('click', login);
 tweetButton.addEventListener('click', postTweet);
