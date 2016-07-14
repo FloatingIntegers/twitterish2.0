@@ -7,23 +7,33 @@ const formSubmit = document.getElementById('form-submit');
 
 function postTweet() {
   const xhr = new XMLHttpRequest();
+  const cookieMonster = document.cookie;
+  const cookies = cookieMonster.split(';');
+  const activeCookie = cookies[cookies.length - 1];
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      tweetText.value = '';
+      location.reload(true);
     }
   }
   xhr.open("POST", "/postTweet", true);
-  xhr.send(tweetText.value);
+   const tweetObj = {
+    cookie: activeCookie,
+    text: tweetText.value
+  }
+  xhr.send(JSON.stringify(tweetObj));
 }
 
 function getTweet() {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      const tweetDiv = document.createElement('div');
-      const text = document.createTextNode(xhr.response);
-      tweetDiv.appendChild(text);
-      dashboard.appendChild(tweetDiv);
+      const tweets = JSON.parse(xhr.response);
+      tweets.forEach((element) => {
+        const tweetDiv = document.createElement('div');
+        const text = document.createTextNode(`${element.username}: ${element.tweets}`);
+        tweetDiv.appendChild(text);
+        dashboard.appendChild(tweetDiv);
+      });
     }
   }
   xhr.open("GET", "/getTweet", true);
@@ -34,7 +44,8 @@ function login() {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      console.log(xhr.response);
+      const id = JSON.parse(xhr.response).id;
+      document.cookie = `id${id}=${id}`;
     }
   }
   const username = document.getElementById('username').value;
