@@ -46,6 +46,7 @@ function login() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const id = JSON.parse(xhr.response).id;
       document.cookie = `id${id}=${id}`;
+      alert(`You are now logged in as: ${username}`);
     }
   }
   const username = document.getElementById('username').value;
