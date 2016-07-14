@@ -1,9 +1,8 @@
 const tweetText = document.getElementById('tweetText');
 const tweetButton = document.getElementById('tweetButton');
 const dashboard = document.getElementById('dashboard');
-// const loginForm = document.getElementById('login');
 const formSubmit = document.getElementById('form-submit');
-
+const formContainer = document.getElementById('form-container');
 
 function postTweet() {
   const xhr = new XMLHttpRequest();
@@ -12,7 +11,6 @@ function postTweet() {
   const activeCookie = cookies[cookies.length - 1];
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      location.reload(true);
     }
   }
   xhr.open("POST", "/postTweet", true);
@@ -21,6 +19,8 @@ function postTweet() {
     text: tweetText.value
   }
   xhr.send(JSON.stringify(tweetObj));
+  getTweet();
+  tweetText.value = '';
 }
 
 function getTweet() {
@@ -54,6 +54,7 @@ function login() {
   let qString = `/user?username=${username}&password=${password}`;
   xhr.open("POST", qString, true);
   xhr.send();
+  formContainer.classList.toggle('hidden');
 }
 
 window.addEventListener('load', getTweet);
