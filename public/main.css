@@ -1,3 +1,44 @@
-h1{
-  color: red;
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+*{
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+}
+#content-wrapper{
+  width: 800px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+#tweetText{
+  width: 100%;
+  height: 120px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 5vh;
+  outline: none;
+}
+#tweetButton{
+  padding: 0,5%;
+  border-radius: 5px;
+  outline: none;
+  font-size: 2vh;
+  background-color: inherit;
+  border-style: 1px solid black;
+}
+
+#dashboard > *{
+  margin: 1%;
+  padding: 2%;
+  border: 1px solid black;
+  border-radius: 5px;
 }
