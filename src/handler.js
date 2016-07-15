@@ -67,8 +67,6 @@ function handler(req, res) {
             res.end();
           })
       });
-
-
   } else handleError(res);
 }
 

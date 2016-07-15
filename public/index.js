@@ -6,24 +6,41 @@ const formContainer = document.getElementById('form-container');
 
 function postTweet() {
   const xhr = new XMLHttpRequest();
-  const cookieMonster = document.cookie;
-  const cookies = cookieMonster.split(';');
-  const activeCookie = cookies[cookies.length - 1];
+  const cookieMonster = document.cookie.split(';');
+  const activeCookie = cookieMonster[cookies.length - 1];
+  const tweetObj = {
+   cookie: activeCookie,
+   text: tweetText.value
+  };
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       getTweet();
+      tweetText.value = '';
     }
   }
-  if (tweetText.value === ''){
-    return;
-  }
+  if (tweetText.value === '') return;
   xhr.open("POST", "/postTweet", true);
-   const tweetObj = {
-    cookie: activeCookie,
-    text: tweetText.value
-  }
   xhr.send(JSON.stringify(tweetObj));
-  tweetText.value = '';
+}
+
+function clearDashboard() {
+  while(dashboard.firstChild){
+    dashboard.removeChild(dashboard.firstChild);
+  }
+}
+
+function displayTweets(tweets) {
+  tweets.forEach((element) => {
+    const tweetDiv = document.createElement('div');
+    const text = document.createTextNode(`${element.username}: ${element.tweets}`);
+    tweetDiv.appendChild(text);
+    dashboard.appendChild(tweetDiv);
+  });
+}
+
+function hideLoginForm () {
+  formContainer.classList.toggle('hidden');
+  dashboard.className = '';
 }
 
 function getTweet() {
@@ -31,15 +48,8 @@ function getTweet() {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const tweets = JSON.parse(xhr.response).reverse();
-      while(dashboard.firstChild){
-        dashboard.removeChild(dashboard.firstChild);
-      }
-      tweets.forEach((element) => {
-        const tweetDiv = document.createElement('div');
-        const text = document.createTextNode(`${element.username}: ${element.tweets}`);
-        tweetDiv.appendChild(text);
-        dashboard.appendChild(tweetDiv);
-      });
+      clearDashboard();
+      displayTweets(tweets);
     }
   }
   xhr.open("GET", "/getTweet", true);
@@ -48,6 +58,9 @@ function getTweet() {
 
 function login() {
   const xhr = new XMLHttpRequest();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  let qString = `/user?username=${username}&password=${password}`;
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const id = JSON.parse(xhr.response).id;
@@ -55,15 +68,10 @@ function login() {
       alert(`You are now logged in as: ${username}`);
     }
   }
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-  let qString = `/user?username=${username}&password=${password}`;
   xhr.open("POST", qString, true);
   xhr.send();
-  formContainer.classList.toggle('hidden');
-  dashboard.className = '';
+  hideLoginForm();
 }
-
 
 window.addEventListener('load', getTweet);
 formSubmit.addEventListener('click', login);
