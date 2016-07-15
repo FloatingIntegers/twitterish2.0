@@ -14,6 +14,9 @@ function postTweet() {
       getTweet();
     }
   }
+  if (tweetText.value === ''){
+    return;
+  }
   xhr.open("POST", "/postTweet", true);
    const tweetObj = {
     cookie: activeCookie,
