@@ -7,7 +7,7 @@ const formContainer = document.getElementById('form-container');
 function postTweet() {
   const xhr = new XMLHttpRequest();
   const cookieMonster = document.cookie.split(';');
-  const activeCookie = cookieMonster[cookies.length - 1];
+  const activeCookie = cookieMonster[cookieMonster.length - 1];
   const tweetObj = {
    cookie: activeCookie,
    text: tweetText.value
