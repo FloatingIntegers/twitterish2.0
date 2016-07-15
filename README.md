@@ -1,5 +1,9 @@
 # twitterish2.0
 
+##Quick-Start Guide
+
+Our app is currently hosted on heroku [here](https://evening-bayou-94962.herokuapp.com/).
+
 ##What
 
 A twitterish dashboard for displaying 140 character tweets. Now with postgreSQL!
