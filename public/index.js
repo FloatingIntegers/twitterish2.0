@@ -11,6 +11,7 @@ function postTweet() {
   const activeCookie = cookies[cookies.length - 1];
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      getTweet();
     }
   }
   xhr.open("POST", "/postTweet", true);
@@ -19,7 +20,6 @@ function postTweet() {
     text: tweetText.value
   }
   xhr.send(JSON.stringify(tweetObj));
-  getTweet();
   tweetText.value = '';
 }
 
@@ -28,6 +28,9 @@ function getTweet() {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const tweets = JSON.parse(xhr.response).reverse();
+      Array.from(dashboard).forEach((element) => {
+        tweets.removeChild(element);
+      })
       tweets.forEach((element) => {
         const tweetDiv = document.createElement('div');
         const text = document.createTextNode(`${element.username}: ${element.tweets}`);
@@ -56,6 +59,7 @@ function login() {
   xhr.send();
   formContainer.classList.toggle('hidden');
 }
+
 
 window.addEventListener('load', getTweet);
 formSubmit.addEventListener('click', login);
