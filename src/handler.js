@@ -4,8 +4,13 @@ const uri = require('url');
 // const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/twitterish';
 // const client = new pg.Client(connectionString);
 const pool = new Pool({
-  host: 'localhost',
-  database: 'twitterish'
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER, //env var: PGUSER
+  database: process.env.DB_NAME || 'twitterish', //env var: PGDATABASE
+  password: process.env.DB_PASSWORD, //env var: PGPASSWORD
+  port: 5432, //env var: PGPORT
+  max: 10, // max number of clients in the pool
+  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 });
 const { handleError, handleFile } = require('./handlerHelpers.js');
 
