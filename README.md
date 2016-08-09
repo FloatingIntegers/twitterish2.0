@@ -2,7 +2,7 @@
 
 ##Quick-Start Guide
 
-This app is currently undeployed. To run it locally you will need to create a local instance of the postgresql database included in the create-table.sql file.
+This app is currently undeployed. To run it locally you will need to create a local instance of the postgresql database included in the create-tables.sql file.
 
 ##What
 
