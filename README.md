@@ -2,7 +2,7 @@
 
 ##Quick-Start Guide
 
-Our app is currently hosted on heroku [here](https://evening-bayou-94962.herokuapp.com/).
+This app is currently undeployed. To run it locally you will need to create a local instance of the postgresql database included in the create-table.sql file.
 
 ##What
 
